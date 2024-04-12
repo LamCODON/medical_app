@@ -49,8 +49,8 @@ const OverView = () => {
             <TouchableOpacity style={[styles.healthTableCell, { width: '15%' }]}>
             <Text >chi tiet</Text>
             </TouchableOpacity>
-            </View>
-        ))}
+            </View> 
+        ))}   
       </ScrollView>
     );
   };

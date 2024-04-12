@@ -20,11 +20,11 @@ export default class BarChart extends PureComponent {
           <Line
             x1="0"
             y1="2"
-            x2={graphWidth}
+            x2={graphWidth} 
             y2="2"
             stroke={colors.axis}
             strokeWidth="0.5"
-          />
+          /> 
         </G>
       </Svg>
     );
