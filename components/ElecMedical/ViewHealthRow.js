@@ -13,9 +13,8 @@ import inbox from "../../assets/inbox.png";
 import setting from "../../assets/setting.png";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { gray } from "d3";
-import { Ionicons } from '@expo/vector-icons';
 
-const OverView = () => {
+const ViewHealthRow = () => {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -37,49 +36,54 @@ const OverView = () => {
   const healthData = renderHealthData();
   const renderHealth = () => {
     return (
-      <Layout>
+
+      <ScrollView style={styles.healthTableContainer}>
         <View style={styles.healthRow}>
           <Text style={[styles.healthTableHeader, { width: '50%' }]}>Name</Text>
           <Text style={[styles.healthTableHeader, { width: '35%' }]}>Date</Text>
           <Text style={[styles.healthTableHeader, { width: '15%' }]}>View</Text>
         </View>
-        <ScrollView style={[styles.healthTableContainer, styles.tableContainer]}>
-          {healthData.map((item) => (
-            <View key={item.id} style={styles.healthRow}>
-              <Text style={[styles.healthTableCell, { width: '50%' }]}>{item.name}</Text>
-              <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.date}</Text>
-              <View style={[styles.healthTableCell, { width: '15%' }]}>
-                <TouchableOpacity 
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
-                  <Text style={styles.viewHealthRow} >Xem</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
-                  <Text style={styles.viewHealthRow} >Sửa</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-          ))}
-        </ScrollView>
-      </Layout>
+        {healthData.map((item) => (
+          <View key={item.id} style={styles.healthRow}>
+            <Text style={[styles.healthTableCell, { width: '50%' }]}>{item.name}</Text>
+            <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.date}</Text>
+            <TouchableOpacity style={[styles.healthTableCell, { width: '15%' }]}
+            onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
+            <Text style={styles.viewHealthRow} >Xem</Text>
+            </TouchableOpacity>
+            </View> 
+        ))}   
+      </ScrollView>
     );
   };
 
   return (
-    <Layout style={styles.layoutStyle}>
+    <Layout>
       <View style={drugsStyles.viewBox}>
         <ImageButton onPress={() => navigation.goBack()} source={ArrowLeftIcon} />
       </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.headerText}>Danh sách đơn thuốc</Text>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <Image source={avt} style={styles.imageAvatar} />
+          <View >
+            <Text style={{ color: 'green' }}>Hi, WelcomeBack</Text>
+            <Text style={{ fontWeight: 'bold' }}>John Doe</Text>
+          </View>
+        </View>
+        <View style={styles.headerRight}>
+          <TouchableOpacity>
+            <Image source={noti} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={inbox} style={styles.icon} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image source={setting} style={styles.icon} />
+          </TouchableOpacity>
+
+        </View>
       </View>
       {renderHealth()}
-      <TouchableOpacity style={styles.addButton} 
-       onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription" })}>
-        <Text style={styles.addButtonText}>Thêm đơn thuốc</Text>
-        <Ionicons name="add-circle-outline" size={24} color="white" />
-      </TouchableOpacity>
     </Layout>
   );
 };
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   healthTableCell: {
-    fontSize: 14, 
+    fontSize: 14,
   },
   defaultStatus: {
     backgroundColor: '#EBF9F1',
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
-
+    
   },
   buttonText: {
     width: 90,
@@ -189,53 +193,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 16,
+    borderRadius: 20,
     overflow: 'hidden',
-  },
-  headerText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 18,
-    padding: 10,
-    borderRadius: 10,
-  },
-  titleContainer: {
-    backgroundColor: '#1F9254',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  headerText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 20, // Đặt kích thước phù hợp cho chữ to hơn
-  },
-  tableContainer: {
-    marginBottom: 20, // Tạo khoảng cách giữa title và table
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tableContainer: {
-    flex: 1,
-    // Phần hiển thị danh sách đơn thuốc
-  },
-  addButton: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'gray',
-    borderRadius: 10,
-    height: 50,
-  },
-  addButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-    marginRight: 10,
-  },
+  }
 });
 
-export default OverView;
+export default ViewHealthRow;
