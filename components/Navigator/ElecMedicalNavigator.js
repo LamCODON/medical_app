@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import OverView from "../ElecMedical/OverView";
 import ViewHealthRow from "../ElecMedical/ViewHealthRow";
 import AddPrescription from "../ElecMedical/AddPrescription";
-import Weight from "../Health/Weight";
+import DrugList from "../ElecMedical/DrugList";
 import Height from  "../Health/Height"
 
 const Stack = createNativeStackNavigator();
@@ -14,7 +14,7 @@ const ElecMedicalNavigator = () => {
       <Stack.Screen name="OverView" component={OverView} />
       <Stack.Screen name="ViewHealthRow" component={ViewHealthRow} />
       <Stack.Screen name="AddPrescription" component={AddPrescription} />
-      <Stack.Screen name="Height" component={Height} />
+      <Stack.Screen name="DrugList" component={DrugList} />
     </Stack.Navigator>
   );
 };

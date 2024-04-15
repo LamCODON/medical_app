@@ -76,7 +76,7 @@ const OverView = () => {
       </View>
       {renderHealth()}
       <TouchableOpacity style={styles.addButton} 
-       onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription" })}>
+       onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription" , params: { someParam: "new" }})}>
         <Text style={styles.addButtonText}>Thêm đơn thuốc</Text>
         <Ionicons name="add-circle-outline" size={24} color="white" />
       </TouchableOpacity>

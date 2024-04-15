@@ -1,40 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView, Pressable, SectionList, FlatList, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
 import Layout from "../common/Layout/Layout";
-import drugsStyles from "../Drugs/drugsStyles";
 import ImageButton from "../common/ImageButton/ImageButton";
 import ArrowLeftIcon from "../../assets/icons/black_arrow_left.png";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 const AddPrescription = () => {
     const navigation = useNavigation();
-    const [value, onChangeText] = React.useState('');
-    const [currentDate, setCurrentDate] = useState('');
     const route = useRoute();
-    // Logic xử lý khi nhấn nút addDrug
+    
+const { selectedRows } = route.params || {};
+    const [value, onChangeText] = useState('');
+    const [currentDate, setCurrentDate] = useState('');
+
+    useEffect(() => {
+        const currentDate = new Date().toLocaleDateString();
+        setCurrentDate(currentDate);
+    }, []);
+
     const handleAddDrug = () => {
         // Xử lý khi nhấn nút addDrug
     };
-    useEffect(() => {
-        const currentDate = new Date().toDateString();
-        setCurrentDate(currentDate);
-    }, []);
 
     return (
         <Layout>
             <View style={styles.header}>
                 {/* Nút quay về trang trước */}
-                <View style={drugsStyles.viewBox}>
+                <View>
                     <ImageButton onPress={() => navigation.goBack()} source={ArrowLeftIcon} />
                 </View>
                 {/* Nút "Done" */}
-                <TouchableOpacity style={styles.doneButton}>
+                <TouchableOpacity style={styles.doneButton} onPress={() => navigation.popToTop()}>
                     <Text style={styles.doneButtonText}>Done</Text>
                 </TouchableOpacity>
             </View>
 
             <View style={styles.container}>
-
+                <View style={styles.readonlyContainer}>
+                    <Text>Ngày hiện tại: {currentDate}</Text>
+                    {/* Hiển thị ngày hiện tại (readonly) */}
+                </View>
                 <View style={[styles.inputContainer, styles.borderBottom]}>
                     <TextInput
                         editable
@@ -48,12 +53,9 @@ const AddPrescription = () => {
                     />
                     {/* Thêm input text tình trạng */}
                 </View>
-                <View style={[styles.readonlyContainer, styles.borderBottom]}>
-                    <Text>Ngày hiện tại: {currentDate}</Text>
-                    {/* Hiển thị ngày hiện tại (readonly) */}
-                </View >
-                <View style={[styles.readonlyContainer, styles.borderBottom]}>
-                    <TouchableOpacity style={[styles.addButton, styles.borderRadius]} onPress={handleAddDrug}>
+
+                <View style={styles.readonlyContainer}>
+                    <TouchableOpacity style={[styles.addButton, styles.borderRadius]} onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "DrugList" })}>
                         <Text style={styles.addButtonText}>Add Drug</Text>
                     </TouchableOpacity>
                 </View>
@@ -63,13 +65,13 @@ const AddPrescription = () => {
     );
 };
 
-const styles = {
+const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 10,
-      },
+    },
     container: {
         flex: 1,
         padding: 20,
@@ -81,8 +83,8 @@ const styles = {
         marginBottom: 20,
     },
     addButton: {
-        backgroundColor: '#1F9254',
-        padding: 15,
+        backgroundColor: 'gray',
+        padding: 12,
         alignItems: 'center',
     },
     addButtonText: {
@@ -96,6 +98,15 @@ const styles = {
     borderRadius: {
         borderRadius: 10,
     },
-};
+    doneButton: {
+        backgroundColor: 'green',
+        padding: 12,
+        alignItems: 'center',
+    },
+    doneButtonText: {
+        color: 'white',
+        fontWeight: 'bold',
+    }
+});
 
 export default AddPrescription;
