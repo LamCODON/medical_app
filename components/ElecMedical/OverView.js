@@ -62,7 +62,7 @@ const OverView = () => {
                   <Text style={styles.viewHealthRow} >Xem</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
+                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription", params: { view: item.id } })}>
                   <Text style={styles.viewHealthRow} >Sửa</Text>
                 </TouchableOpacity>
               </View>

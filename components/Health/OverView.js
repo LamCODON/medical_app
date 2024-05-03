@@ -98,19 +98,19 @@ const OverView = () => {
         </View>
       </View>
       {renderHealth()}
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <TouchableOpacity style={[styles.button]} onPress={() => { }}>
           <Text style={[styles.buttonText, styles.activeButton]}>Report</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}
+        </TouchableOpacity> */}
+        {/* <TouchableOpacity style={styles.button}
           onPress={() => navigation.navigate("HealthNavigator", { screen: "Weight" })}>
           <Text style={styles.buttonText}>Weight</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} 
           onPress={() => navigation.navigate("HealthNavigator", { screen: "Height" })}>
           <Text style={styles.buttonText}>Height</Text>
-        </TouchableOpacity>
-      </View>
+        </TouchableOpacity> */}
+      {/* </View> */}
     </Layout>
   );
 };

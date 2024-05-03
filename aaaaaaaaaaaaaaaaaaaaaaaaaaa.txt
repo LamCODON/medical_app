@@ -45,3 +45,29 @@ const DanhSachThuoc = () => {
 };
 
 export default DanhSachThuoc;
+
+
+
+
+
+
+
+
+
+html_content = response.text
+
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    ul_tag = soup.find('ul', class_='o-masonry o-masonry--column-3')
+    result = []
+    for id, li_tag in enumerate(ul_tag.find_all('li', class_='item')):
+        a_tag = li_tag.find('a', class_='c-media clearfix')
+        href = a_tag['href']
+        title = a_tag['title']
+        
+        result.append({
+            "id": id,
+            "title": title,
+            "href": href
+        })
+    return jsonify(result)
