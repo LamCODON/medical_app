@@ -1,6 +1,8 @@
 import { View, Text, Image, ScrollView, Pressable, SectionList, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {doc, collection, onSnapshot } from "firebase/firestore"
 import Layout from "../common/Layout/Layout";
+import { db } from "../config/firebase";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import drugsStyles from "../Drugs/drugsStyles";
 import ImageButton from "../common/ImageButton/ImageButton";
@@ -16,19 +18,25 @@ import { gray } from "d3";
 import { Ionicons } from '@expo/vector-icons';
 
 const OverView = () => {
+  const [prescriptionList, setPrescriptionList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true)
+    const usersQuery = collection(db, "donthuoc")
+    onSnapshot(usersQuery, (snapshot) => {
+      let prescriptionList = []; // Renaming usersList to prescriptionList
+      snapshot.docs.forEach((doc) => {
+        prescriptionList.push({ ...doc.data(), id: doc.id });
+      });
+      setPrescriptionList(prescriptionList)
+      setLoading(false)
+    })
+  }, [])
   const navigation = useNavigation();
   const route = useRoute();
 
   const renderHealthData = () => {
-    const healthData = [];
-    for (let index = 1; index < 2; index++) {
-      healthData.push({
-        id: index,
-        name: "sot, ho, dau hong",
-        date: index + "/03/2024"
-      });
-    }
-    return healthData;
+    return prescriptionList;
   };
 
   const health = [
@@ -49,8 +57,8 @@ const OverView = () => {
               <Text style={[styles.healthTableCell, { width: '50%' }]}>{item.name}</Text>
               <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.date}</Text>
               <View style={[styles.healthTableCell, { width: '15%' }]}>
-                <TouchableOpacity 
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow", params: { view: item.id } })}>
                   <Text style={styles.viewHealthRow} >Xem</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -75,8 +83,8 @@ const OverView = () => {
         <Text style={styles.headerText}>Danh sách đơn thuốc</Text>
       </View>
       {renderHealth()}
-      <TouchableOpacity style={styles.addButton} 
-       onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription" , params: { someParam: "new" }})}>
+      <TouchableOpacity style={styles.addButton}
+        onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription", params: { someParam: "new" } })}>
         <Text style={styles.addButtonText}>Thêm đơn thuốc</Text>
         <Ionicons name="add-circle-outline" size={24} color="white" />
       </TouchableOpacity>
@@ -125,7 +133,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   healthTableCell: {
-    fontSize: 14, 
+    fontSize: 14,
   },
   defaultStatus: {
     backgroundColor: '#EBF9F1',

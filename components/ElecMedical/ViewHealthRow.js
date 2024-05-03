@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView, Pressable, SectionList, FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../common/Layout/Layout";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import drugsStyles from "../Drugs/drugsStyles";
@@ -13,21 +13,33 @@ import inbox from "../../assets/inbox.png";
 import setting from "../../assets/setting.png";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { gray } from "d3";
-
+import { doc, getDoc, onSnapshot, snapshotEqual, collection } from 'firebase/firestore';
+import { db } from '../config/firebase';
+import DrugDetail from "../ElecMedical/DrugDetail";
 const ViewHealthRow = () => {
-  const navigation = useNavigation();
+  const [drugList, setDrugList] = useState([]);
+  const [prescriptionInfor, setPrescriptionInfor] = useState([]);
+  const [loading, setLoading] = useState(false);
   const route = useRoute();
+  const viewItemId = route.params?.view;
+  useEffect(() => {
+    setLoading(true)
+    const donthuocRef = doc(db, "donthuoc", viewItemId);
+    const unsubscribe = onSnapshot(collection(donthuocRef, "thuoc"), (snapshot) => {
+
+      const thuocData = snapshot.docs.map((doc) => {
+        drugList.push({ ...doc.data(), id: doc.id });
+      });
+      setDrugList(drugList)
+      setLoading(false)
+    })
+  }, [])
+
+  const navigation = useNavigation();
+
 
   const renderHealthData = () => {
-    const healthData = [];
-    for (let index = 1; index < 2; index++) {
-      healthData.push({
-        id: index,
-        name: "sot, ho, dau hong",
-        date: index + "/03/2024"
-      });
-    }
-    return healthData;
+    return drugList;
   };
 
   const health = [
@@ -39,20 +51,28 @@ const ViewHealthRow = () => {
 
       <ScrollView style={styles.healthTableContainer}>
         <View style={styles.healthRow}>
-          <Text style={[styles.healthTableHeader, { width: '50%' }]}>Name</Text>
-          <Text style={[styles.healthTableHeader, { width: '35%' }]}>Date</Text>
+          <Text style={[styles.healthTableHeader, { width: '50%' }]}>Image</Text>
+          <Text style={[styles.healthTableHeader, { width: '35%' }]}>Name</Text>
           <Text style={[styles.healthTableHeader, { width: '15%' }]}>View</Text>
         </View>
         {healthData.map((item) => (
           <View key={item.id} style={styles.healthRow}>
-            <Text style={[styles.healthTableCell, { width: '50%' }]}>{item.name}</Text>
-            <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.date}</Text>
+            <Image
+              source={require('../../assets/drug_images/thuocA.jpg')}
+              style={{
+                width: 50, // Đặt chiều rộng của hình ảnh
+                height: 50, // Đặt chiều cao của hình ảnh
+                resizeMode: 'contain', // Chọn phương thức điều chỉnh kích thước của hình ảnh
+              }}
+            />
+            <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.name}</Text>
             <TouchableOpacity style={[styles.healthTableCell, { width: '15%' }]}
-            onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "ViewHealthRow" })}>
-            <Text style={styles.viewHealthRow} >Xem</Text>
+              onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "DrugDetail", params: { url: item.link } })}
+            >
+              <Text style={styles.viewHealthRow} >Xem</Text>
             </TouchableOpacity>
-            </View> 
-        ))}   
+          </View>
+        ))}
       </ScrollView>
     );
   };
@@ -62,27 +82,8 @@ const ViewHealthRow = () => {
       <View style={drugsStyles.viewBox}>
         <ImageButton onPress={() => navigation.goBack()} source={ArrowLeftIcon} />
       </View>
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Image source={avt} style={styles.imageAvatar} />
-          <View >
-            <Text style={{ color: 'green' }}>Hi, WelcomeBack</Text>
-            <Text style={{ fontWeight: 'bold' }}>John Doe</Text>
-          </View>
-        </View>
-        <View style={styles.headerRight}>
-          <TouchableOpacity>
-            <Image source={noti} style={styles.icon} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={inbox} style={styles.icon} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image source={setting} style={styles.icon} />
-          </TouchableOpacity>
-
-        </View>
-      </View>
+      <Text >Tinh trang: {viewItemId}</Text>
+      <Text >Date: {viewItemId}</Text>
       {renderHealth()}
     </Layout>
   );
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    
+
   },
   buttonText: {
     width: 90,

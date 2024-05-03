@@ -4,7 +4,7 @@ import OverView from "../ElecMedical/OverView";
 import ViewHealthRow from "../ElecMedical/ViewHealthRow";
 import AddPrescription from "../ElecMedical/AddPrescription";
 import DrugList from "../ElecMedical/DrugList";
-import Height from  "../Health/Height"
+import DrugDetail from "../ElecMedical/DrugDetail";
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +15,7 @@ const ElecMedicalNavigator = () => {
       <Stack.Screen name="ViewHealthRow" component={ViewHealthRow} />
       <Stack.Screen name="AddPrescription" component={AddPrescription} />
       <Stack.Screen name="DrugList" component={DrugList} />
+      <Stack.Screen name="DrugDetail" component={DrugDetail} />
     </Stack.Navigator>
   );
 };

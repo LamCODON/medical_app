@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput } from 'react-native';
 import Layout from "../common/Layout/Layout";
+import { collection, onSnapshot, snapshotEqual } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const DrugList = ({ navigation }) => {
+    
     const [selectedRows, setSelectedRows] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
