@@ -6,14 +6,14 @@ app = Flask(__name__)
 
 @app.route('/danhsachthuoc', methods=['GET'])
 def danhsachthuoc():
-    url = 'https://www.vinmec.com/vi/thuoc'
+    url = 'https://www.vinmec.com/vi/thuoc/?page=7'
     response = requests.get(url, proxies=None)
     html_content = response.text
     soup = BeautifulSoup(html_content, 'html.parser')
 
     ul_tag = soup.find('ul', class_='o-masonry o-masonry--column-3')
     result = []
-    for id, li_tag in enumerate(ul_tag.find_all('li', class_='item')):
+    for id, li_tag in enumerate(ul_tag.find_all('li', class_='item'), start=181):
         a_tag = li_tag.find('a', class_='c-media clearfix')
         href = a_tag['href']
         title = a_tag['title']
@@ -21,7 +21,7 @@ def danhsachthuoc():
         result.append({
             "id": id,
             "title": title,
-            "href": href
+            "href": "https://www.vinmec.com"+href
         })
     return jsonify(result)
 
