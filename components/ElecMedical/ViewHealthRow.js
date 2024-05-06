@@ -13,7 +13,7 @@ import inbox from "../../assets/inbox.png";
 import setting from "../../assets/setting.png";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { gray } from "d3";
-import { doc, getDoc, onSnapshot, snapshotEqual, collection } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot, snapshotEqual, collection  } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import DrugDetail from "../ElecMedical/DrugDetail";
 const ViewHealthRow = () => {
@@ -65,9 +65,9 @@ const ViewHealthRow = () => {
                 resizeMode: 'contain', // Chọn phương thức điều chỉnh kích thước của hình ảnh
               }}
             />
-            <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.name}</Text>
+            <Text style={[styles.healthTableCell, { width: '35%' }]}>{item.title}</Text>
             <TouchableOpacity style={[styles.healthTableCell, { width: '15%' }]}
-              onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "DrugDetail", params: { url: item.link } })}
+              onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "DrugDetail", params: { url: item.href } })}
             >
               <Text style={styles.viewHealthRow} >Xem</Text>
             </TouchableOpacity>

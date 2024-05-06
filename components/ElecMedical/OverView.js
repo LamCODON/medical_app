@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView, Pressable, SectionList, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
-import {doc, collection, onSnapshot } from "firebase/firestore"
+import {doc,deleteDoc, collection, onSnapshot } from "firebase/firestore"
 import Layout from "../common/Layout/Layout";
 import { db } from "../config/firebase";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -16,6 +16,7 @@ import setting from "../../assets/setting.png";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { gray } from "d3";
 import { Ionicons } from '@expo/vector-icons';
+
 
 const OverView = () => {
   const [prescriptionList, setPrescriptionList] = useState([]);
@@ -38,6 +39,17 @@ const OverView = () => {
   const renderHealthData = () => {
     return prescriptionList;
   };
+
+  const handleDelete = (id) => {
+    const docRef = doc(db, 'donthuoc', id);
+    deleteDoc(docRef)
+        .then(() => {
+            console.log("Document successfully deleted!");
+        })
+        .catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+};
 
   const health = [
     { title: "Report", data: renderHealthData() },
@@ -65,6 +77,9 @@ const OverView = () => {
                   onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription", params: { view: item.id } })}>
                   <Text style={styles.viewHealthRow} >Sửa</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleDelete(item.id)}>
+                                <Text style={styles.viewHealthRow}>Xóa</Text>
+                            </TouchableOpacity>
               </View>
             </View>
 
