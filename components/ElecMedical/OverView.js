@@ -1,6 +1,6 @@
 import { View, Text, Image, ScrollView, Pressable, SectionList, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
-import {doc,deleteDoc, collection, onSnapshot } from "firebase/firestore"
+import { doc, deleteDoc, collection, onSnapshot } from "firebase/firestore"
 import Layout from "../common/Layout/Layout";
 import { db } from "../config/firebase";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -43,13 +43,13 @@ const OverView = () => {
   const handleDelete = (id) => {
     const docRef = doc(db, 'donthuoc', id);
     deleteDoc(docRef)
-        .then(() => {
-            console.log("Document successfully deleted!");
-        })
-        .catch((error) => {
-            console.error("Error removing document: ", error);
-        });
-};
+      .then(() => {
+        console.log("Document successfully deleted!");
+      })
+      .catch((error) => {
+        console.error("Error removing document: ", error);
+      });
+  };
 
   const health = [
     { title: "Report", data: renderHealthData() },
@@ -74,12 +74,12 @@ const OverView = () => {
                   <Text style={styles.viewHealthRow} >Xem</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription", params: { view: item.id } })}>
+                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "EditPrescription", params: { edit: item.id } })}>
                   <Text style={styles.viewHealthRow} >Sửa</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> 
                 <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                                <Text style={styles.viewHealthRow}>Xóa</Text>
-                            </TouchableOpacity>
+                  <Text style={styles.viewHealthRow}>Xóa</Text>
+                </TouchableOpacity>
               </View>
             </View>
 
