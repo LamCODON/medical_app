@@ -13,7 +13,8 @@ const DrugList = ({ navigation }) => {
     // Dữ liệu danh sách các loại thuốc
     const drugData = require('../Data/Data.json');
     const drugsList = route.params?.drugData;
-    console.log(drugsList);
+    const docId = route.params?.edit;
+    console.log(docId);
     // Xử lý khi người dùng nhấp vào hàng
     useEffect(() => {
         if (drugsList && drugsList.length > 0) {
@@ -72,7 +73,7 @@ const DrugList = ({ navigation }) => {
                     ))}
                 </ScrollView>
                 <TouchableOpacity
-                    onPress={() => navigation.navigate("AddPrescription", { someParam: "drug", drugs: selectedRows })} style={styles.backButton}>
+                    onPress={() => navigation.navigate("EditPrescription", { someParam: "drug", drugs: selectedRows, edit: docId })} style={styles.backButton}>
                     <Text style={styles.backButtonText}>Done</Text>
                 </TouchableOpacity>
             </View>

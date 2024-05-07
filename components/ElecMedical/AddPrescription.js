@@ -10,6 +10,7 @@ const AddPrescription = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const drugData = require('../Data/Data.json');
+    const page = route.params?.edit ? "edit" : "new";
     const drugsList = route.params?.drugs;
     const [value, onChangeText] = useState('');
     const [currentDate, setCurrentDate] = useState('');

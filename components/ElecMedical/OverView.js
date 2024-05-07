@@ -74,7 +74,7 @@ const OverView = () => {
                   <Text style={styles.viewHealthRow} >Xem</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "EditPrescription", params: { edit: item.id } })}>
+                  onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "EditPrescription", params: { edit: item.id, name: item.name} })}>
                   <Text style={styles.viewHealthRow} >Sửa</Text>
                 </TouchableOpacity> 
                 <TouchableOpacity onPress={() => handleDelete(item.id)}>
@@ -99,7 +99,7 @@ const OverView = () => {
       </View>
       {renderHealth()}
       <TouchableOpacity style={styles.addButton}
-        onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription", params: { someParam: "new" } })}>
+        onPress={() => navigation.navigate("ElecMedicalNavigator", { screen: "AddPrescription" })}>
         <Text style={styles.addButtonText}>Thêm đơn thuốc</Text>
         <Ionicons name="add-circle-outline" size={24} color="white" />
       </TouchableOpacity>
